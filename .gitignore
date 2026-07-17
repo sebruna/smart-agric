@@ -1,0 +1,15 @@
+#Dependencies
+node_modules/
+/dist
+/build
+
+#Environment Secret & Data Logs
+.env
+.env.local
+*.log
+npm-debug.log*
+
+#IDE Configurations
+.vscode/
+.idea/
+.DS_Store

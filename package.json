@@ -1,0 +1,13 @@
+{
+  "name": "smart",
+  "scripts":{
+    "dev:back": "npm run server --prefix back",
+    "dev:front": "npm run dev --prefix front",
+
+    "dev":"concurrently -k --raw \"npm run dev:back\" \"npm run dev:front\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}
+
