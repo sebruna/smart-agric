@@ -2,7 +2,6 @@ import db from "./db.js";
 import 'dotenv/config.js';
 
 const queries = [
-    `USE ${process.env.DB_NAME};`,
 
     `-- 1. USERS TABLE (Handles Admin, Farmers, and Buyers)
     CREATE TABLE IF NOT EXISTS users (

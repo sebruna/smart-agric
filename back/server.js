@@ -11,6 +11,7 @@ import publicRouter from './routes/publicRoute.js';
 import path from 'path';
 import farmerProfileRouter from './routes/farmerProfileRoute.js';
 import settingsRouter from './routes/settingsRoute.js';
+import initDataBase from './config/initdb.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -35,6 +36,7 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.get('/', (req, res) => {
   res.json({ status: "online", service: "Smart Agriculture API is running on SE logic...😎" });
 });
+initDataBase();
 // Run Execution Layout
 app.listen(PORT, '0,0,0,0', () => {
   console.log(`✔ Server running directly on port ${PORT}`);
