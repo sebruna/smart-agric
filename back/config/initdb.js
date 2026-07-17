@@ -2,7 +2,6 @@ import db from "./db.js";
 import 'dotenv/config.js';
 
 const queries = [
-    `CREATE DATABASE IF NOT EXISTS smart_agriculture;`,
     `USE ${process.env.DB_NAME};`,
 
     `-- 1. USERS TABLE (Handles Admin, Farmers, and Buyers)
