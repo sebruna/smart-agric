@@ -54,7 +54,7 @@ const FarmerFields = () => {
         };
 
         try {
-            const response = await api.post('/field/add', { payload });
+            const response = await api.post('/field/add', payload);
 
             const data = await response.data;
             if (!response.status === 200) throw new Error(data.message || 'Failed to record plot data.');
