@@ -36,9 +36,7 @@ const FarmerOrders = () => {
        
         setActionLoadingId(orderId);
         try {
-            const response = await api.put(`/orders/${orderId}/status`, {
-                body: JSON.stringify({ status: statusDecision })
-            });
+            const response = await api.put(`/orders/${orderId}/status`, { status: statusDecision });
            
             const data = await response.data;
             if (!response.status === 200) throw new Error(data.message || 'Failed to record deal resolution update.');

@@ -37,7 +37,7 @@ const FarmerProfile = () => {
             });
            
             if (data.profile_pic) {
-                setProfilePicUrl(`http://localhost:4000${data.profile_pic}`);
+                setProfilePicUrl(`https://smart-agrics.onrender.com${data.profile_pic}`);
             }
         } catch (err) {
             setMsg({ text: err.message, isError: true });
@@ -91,7 +91,7 @@ const FarmerProfile = () => {
            
             // Sync up internal view profile structures with backend's returned file pointer URL string
             if (result.profile_pic) {
-                setProfilePicUrl(`http://localhost:4000${result.profile_pic}`);
+                setProfilePicUrl(`https://smart-agrics.onrender.com${result.profile_pic}`);
                 setSelectedFile(null);
                 setPreviewUrl('');
             }
