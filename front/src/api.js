@@ -2,7 +2,7 @@ import axios from "axios";
 
 //create a configured axios instance
 const api = axios.create({
-    baseURL: 'https://agritrade-backend.onrender.com/api', //points directly to Node.js server 'https://agritrade-backend.onrender.com' http://localhost:4000/api
+    baseURL: 'https://smart-agrics.onrender.com/api', //points directly to Node.js server 'https://agritrade-backend.onrender.com' http://localhost:4000/api
     headers:{
         'Content-Type': 'application/json',
     },
