@@ -14,8 +14,8 @@ const AdminDashboard = () => {
         const fetchAnalytics = async () => {
             try {
                 const response = await api.get('/analytics/overview', );
-                const data = await response.json();
-                if (!response.ok) throw new Error(data.message || 'Analytics fetch failure.');
+                const data = await response.data;
+                if (!response.status === 200) throw new Error(data.message || 'Analytics fetch failure.');
                 setStats(data);
             } catch (err) {
                 setError(err.message);
