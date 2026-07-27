@@ -37,7 +37,7 @@ const FarmerProfileModal = ({ userId, token, onClose }) => {
                     <div className="flex items-center gap-4 mt-2">
                         <div className="w-16 h-16 rounded-full bg-white/10 border-2 border-white/20 overflow-hidden flex items-center justify-center shrink-0">
                             {profile?.profile_pic ? (
-                                <img src={`http://localhost:4000${profile.profile_pic}`} alt="Farm" className="w-full h-full object-cover" />
+                                <img src={`https://smart-agrics.onrender.com${profile.profile_pic}`} alt="Farm" className="w-full h-full object-cover" />
                             ) : (
                                 <Tractor size={24} className="text-white/80" />
                             )}

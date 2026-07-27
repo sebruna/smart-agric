@@ -30,9 +30,7 @@ const OfferModal = ({ crop, isOpen, onClose, onSuccess }) => {
         };
 
         try {
-            const response = await api.post('/orders', {
-                body: JSON.stringify(payload)
-            });
+            const response = await api.post('/orders', { payload });
 
             const data = await response.data;
             if (!response.status === 200) throw new Error(data.message || 'Failed to dispatch offer proposal.');
