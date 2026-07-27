@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import FarmerLayout from './FarmerLayout.jsx'; // Assumes you have your matching Farmer tracking layout
 import { FileText, DollarSign, Weight, RefreshCw, Check, X, AlertCircle } from 'lucide-react';
+import api from '../../api.js';
 
 const FarmerOrders = () => {
     const { token } = useAuth();
@@ -14,11 +15,9 @@ const FarmerOrders = () => {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch('http://localhost:4000/api/orders', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to sync incoming contract books.');
+            const response = await api.get('/orders', );
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Failed to sync incoming contract books.');
             setIncomingOffers(data);
         } catch (err) {
             setError(err.message);
@@ -37,17 +36,12 @@ const FarmerOrders = () => {
        
         setActionLoadingId(orderId);
         try {
-            const response = await fetch(`http://localhost:4000/api/orders/${orderId}/status`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+            const response = await api.put(`/orders/${orderId}/status`, {
                 body: JSON.stringify({ status: statusDecision })
             });
            
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to record deal resolution update.');
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Failed to record deal resolution update.');
 
             // Optimistically update the status locally on screen array grid state match
             setIncomingOffers(prevOffers =>

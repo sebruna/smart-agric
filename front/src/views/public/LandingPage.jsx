@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sprout, Users, TrendingUp, ArrowRight, ShieldCheck, ShoppingCart, Loader2, MapPin, Layers } from 'lucide-react';
+import api from '../../api';
 
 const LandingPage = () => {
     const [data, setData] = useState({ showcase: [], metrics: { active_growers: 0, tons_traded: 0, harvests_completed: 0 } });
@@ -9,9 +10,9 @@ const LandingPage = () => {
     useEffect(() => {
         const fetchLandingData = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/public/landing-preview');
-                if (response.ok) {
-                    const result = await response.json();
+                const response = await api.get('/public/landing-preview');
+                if (response.status === 200) {
+                    const result = await response.data;
                     setData(result);
                 }
             } catch (err) {

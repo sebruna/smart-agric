@@ -4,6 +4,7 @@ import BuyerLayout from './BuyerLayout.jsx';
 import OfferModal from './OfferModal.jsx'; // 👈 Import our new modal component
 import { Search, MapPin, Tag, User, ShoppingCart, RefreshCw, CheckCircle } from 'lucide-react';
 import FarmerProfileModal from './FarmerProfileModal.jsx';
+import api from '../../api.js';
 
 const BuyerDashboard = () => {
     const { token } = useAuth();
@@ -21,11 +22,9 @@ const BuyerDashboard = () => {
     const fetchMarketplace = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:4000/api/crop/marketplace', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Market data download error.');
+            const response = await api.get('/crop/marketplace', );
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Market data download error.');
             setListings(data);
         } catch (err) {
             setError(err.message);

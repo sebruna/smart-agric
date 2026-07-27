@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import BuyerLayout from './BuyerLayout.jsx';
 import { FileText, DollarSign, Weight, Calendar, RefreshCw, Clock, CheckCircle2, XCircle } from 'lucide-react';
+import api from '../../api.js';
 
 const BuyerOrders = () => {
     const { token } = useAuth();
@@ -13,11 +14,9 @@ const BuyerOrders = () => {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch('http://localhost:4000/api/orders', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to pull order registries.');
+            const response = await api.get('/orders', );
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Failed to pull order registries.');
             setOrders(data);
         } catch (err) {
             setError(err.message);

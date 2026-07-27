@@ -1,15 +1,15 @@
-#Dependencies
+# Dependencies
 node_modules/
 /dist
 /build
 
-#Environment Secret & Data Logs
+# Environment Secrets & Data Logs
 .env
 .env.local
 *.log
 npm-debug.log*
 
-#IDE Configurations
+# IDE Configurations
 .vscode/
 .idea/
 .DS_Store

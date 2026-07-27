@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import AdminLayout from './AdminLayout.jsx';
 import { Terminal, RefreshCw, AlertTriangle, ShieldAlert, Cpu } from 'lucide-react';
+import api from '../../api.js';
 
 const SystemLogs = () => {
     const { token } = useAuth();
@@ -12,11 +13,9 @@ const SystemLogs = () => {
     const fetchLogs = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:4000/api/admin/logs', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
+            const response = await api.get('/admin/logs',);
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message);
             setLogs(data);
         } catch (err) {
             setError(err.message);

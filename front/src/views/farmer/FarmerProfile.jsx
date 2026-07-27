@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import FarmerLayout from './FarmerLayout.jsx';
 import { Tractor, Phone, MapPin, AlignLeft, Camera, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
+import api from '../../api.js';
 
 const FarmerProfile = () => {
     const { token } = useAuth();
@@ -24,11 +25,9 @@ const FarmerProfile = () => {
     const fetchProfileData = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:4000/api/farmer/get', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to pull profile metrics.');
+            const response = await api.get('/farmer/get',);
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Failed to pull profile metrics.');
            
             setFormData({
                 farm_name: data.farm_name || '',
@@ -81,9 +80,7 @@ const FarmerProfile = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:4000/api/farmer/add', {
-                method: 'PUT',
-                headers: { 'Authorization': `Bearer ${token}` }, // Do NOT include content-type header for FormData!
+            const response = await api.put('/farmer/add', { // Do NOT include content-type header for FormData!
                 body: dataPayload
             });
 

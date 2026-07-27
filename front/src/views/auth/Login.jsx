@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Link } from 'react-router-dom';
+import api from '../../api.js';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -18,14 +19,10 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:4000/api/user/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
+            const response = await api.post('/user/login',  { email, password });
 
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Login failed');
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Login failed');
 
             login(data.user, data.token);
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import AdminLayout from './AdminLayout.jsx';
 import { Sprout, MapPin, Layers, RefreshCw } from 'lucide-react';
+import api from '../../api.js';
 
 const AdminFields = () => {
     const [fields, setFields] = useState([]);
@@ -13,17 +14,11 @@ const AdminFields = () => {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch('http://localhost:4000/api/field/get', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Passing the JWT securely
-                }
-            });
+            const response = await api.get('/field/get');
 
-            const data = await response.json();
+            const data = await response.data;
 
-            if (!response.ok) {
+            if (!response.status === 200) {
                 throw new Error(data.message || 'Failed to fetch field inventories.');
             }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { X, Tractor, MapPin, AlignLeft, ShieldCheck } from 'lucide-react';
+import api from '../../api';
 
 const FarmerProfileModal = ({ userId, token, onClose }) => {
     const [profile, setProfile] = useState(null);
@@ -8,11 +9,9 @@ const FarmerProfileModal = ({ userId, token, onClose }) => {
     useEffect(() => {
         const fetchFarmerProfile = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/api/farmer/public-profile/${userId}`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (response.ok) {
-                    const data = await response.json();
+                const response = await api.get(`/farmer/public-profile/${userId}`, );
+                if (response.status === 200) {
+                    const data = await response.data;
                     setProfile(data);
                 }
             } catch (err) {

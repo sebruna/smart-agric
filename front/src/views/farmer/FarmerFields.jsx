@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import FarmerLayout from './FarmerLayout.jsx';
 import { Shovel, MapPin, Maximize2, PlusCircle, Loader2 } from 'lucide-react';
+import api from '../../api.js';
 
 const FarmerFields = () => {
     const { token } = useAuth();
@@ -20,11 +21,9 @@ const FarmerFields = () => {
 
     const fetchMyFields = async () => {
         try {
-            const response = await fetch('http://localhost:4000/api/field/get', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to sync plots.');
+            const response = await api.get('/field/get',);
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Failed to sync plots.');
             setFields(data);
         } catch (err) {
             setError(err.message);
@@ -55,17 +54,12 @@ const FarmerFields = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:4000/api/field/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+            const response = await api.post('/field/add', {
                 body: JSON.stringify(payload)
             });
 
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to record plot data.');
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Failed to record plot data.');
 
             setSuccess('Plot logged and mapped to your operation node.');
             setFormData({ name: '', location: '', size: '' });

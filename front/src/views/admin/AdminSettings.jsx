@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import AdminLayout from './AdminLayout.jsx';
 import { Sliders, Percent, AlertTriangle, ShieldCheck, Save, RefreshCw } from 'lucide-react';
+import api from '../../api.js';
 
 const AdminSettings = () => {
     const { token } = useAuth();
@@ -19,11 +20,9 @@ const AdminSettings = () => {
     const fetchSettings = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:4000/api/admin-panel/settings', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
+            const response = await api.get('/admin-panel/settings',);
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message);
             setSettings(data);
         } catch (err) {
             setError(err.message);
@@ -49,16 +48,11 @@ const AdminSettings = () => {
         setSuccessMsg('');
 
         try {
-            const response = await fetch('http://localhost:4000/api/admin-panel/settings', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+            const response = await api.put('/admin-panel/settings', {
                 body: JSON.stringify(settings)
             });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message);
             setSuccessMsg(data.message);
         } catch (err) {
             setError(err.message);

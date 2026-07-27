@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import FarmerLayout from './FarmerLayout.jsx';
 import { Sprout, Calendar, Tag, AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
+import api from '../../api.js';
 
 const FarmerCrops = () => {
     const { token } = useAuth();
@@ -25,20 +26,16 @@ const FarmerCrops = () => {
         setError('');
         try {
             // 1. Fetch Farmer's Fields for the dropdown selection
-            const fieldsResponse = await fetch('http://localhost:4000/api/field/get', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const fieldsData = await fieldsResponse.json();
-            if (!fieldsResponse.ok) throw new Error(fieldsData.message || 'Failed to sync fields.');
+            const fieldsResponse = await api.get('/field/get',);
+            const fieldsData = await fieldsResponse.data;
+            if (!fieldsResponse.status === 200) throw new Error(fieldsData.message || 'Failed to sync fields.');
             setFields(fieldsData);
 
             // 2. Fetch Farmer's Crops (assuming a generic crops endpoint exists or filtering on backend)
             // For now, we will fetch crops. Ensure your backend route router is hooked up!
-            const cropsResponse = await fetch('http://localhost:4000/api/crop/get', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const cropsData = await cropsResponse.json();
-            if (cropsResponse.ok) setCrops(cropsData);
+            const cropsResponse = await api.get('/crop/get',);
+            const cropsData = await cropsResponse.data;
+            if (cropsResponse.status === 200) setCrops(cropsData);
 
         } catch (err) {
             setError(err.message);
@@ -62,17 +59,12 @@ const FarmerCrops = () => {
         setSubmitting(true);
 
         try {
-            const response = await fetch('http://localhost:4000/api/crop/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+            const response = await api.post('/crop/add', {
                 body: JSON.stringify(formData)
             });
 
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to log crop data.');
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Failed to log crop data.');
 
             setSuccess('Crop batch logged and tracking initialized.');
             setFormData({ field_id: '', crop_type: '', status: 'planted', planted_at: '' });

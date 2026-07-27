@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { X, DollarSign, Weight, Loader2 } from 'lucide-react';
+import api from '../../api.js';
 
 const OfferModal = ({ crop, isOpen, onClose, onSuccess }) => {
     const { token } = useAuth();
@@ -29,17 +30,12 @@ const OfferModal = ({ crop, isOpen, onClose, onSuccess }) => {
         };
 
         try {
-            const response = await fetch('http://localhost:4000/api/orders', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+            const response = await api.post('/orders', {
                 body: JSON.stringify(payload)
             });
 
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to dispatch offer proposal.');
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Failed to dispatch offer proposal.');
 
             onSuccess(); // Triggers parent dashboard alerts/refreshes
             onClose();   // Closes modal window overlay

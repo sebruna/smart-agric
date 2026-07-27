@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import AdminLayout from './AdminLayout.jsx';
 import { ShieldCheck, UserCheck, RefreshCw, Mail, Calendar } from 'lucide-react';
+import api from '../../api.js';
 
 const AdminUsers = () => {
     const [users, setUsers] = useState([]);
@@ -13,12 +14,10 @@ const AdminUsers = () => {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch('http://localhost:4000/api/user/users', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
+            const response = await api.get('/user/users',);
+            const data = await response.data;
            
-            if (!response.ok) throw new Error(data.message || 'Failed to sync users.');
+            if (!response.status === 200) throw new Error(data.message || 'Failed to sync users.');
             setUsers(data);
         } catch (err) {
             setError(err.message);
@@ -29,12 +28,7 @@ const AdminUsers = () => {
 
     const handleModifyRole = async (userId, updatedRole) => {
         try {
-            const response = await fetch(`http://localhost:4000/api/user/update/${userId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+            const response = await api.put(`/user/update/${userId}`, {
                 body: JSON.stringify({ role: updatedRole })
             });
         
@@ -51,10 +45,7 @@ const AdminUsers = () => {
         if (!window.confirm("Are you sure you want to suspend this account?")) return;
         
         try {
-            const response = await fetch(`http://localhost:4000/api/user/remove/${userId}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            const response = await api.delete(`/user/remove/${userId}`,);
         
             if (response.ok) {
                 // Instantly remove the deleted user from your screen state layout

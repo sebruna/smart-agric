@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Sprout, User, Mail, Lock, ShieldAlert, Tractor, ShoppingBag, Loader2 } from 'lucide-react';
+import api from '../../api';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -27,14 +28,10 @@ const Register = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:4000/api/user/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
+            const response = await api.post('/user/register', formData);
 
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Registration failed.');
+            const data = await response.data;
+            if (!response.status === 200) throw new Error(data.message || 'Registration failed.');
 
             // Success -> Forward straight to the login route with a clear dashboard signal
             navigate('/login', { state: { successMessage: 'Profile established! You can now authenticate with your credentials.' } });
