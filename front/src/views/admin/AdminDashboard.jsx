@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import AdminLayout from './AdminLayout.jsx';
 import { Users, Sprout, Layers, Activity, TrendingUp, ShieldCheck } from 'lucide-react';
+import api from '../../api.js';
 
 const AdminDashboard = () => {
     const { token } = useAuth();
@@ -12,9 +13,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchAnalytics = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/analytics/overview', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
+                const response = await api.get('/analytics/overview', );
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.message || 'Analytics fetch failure.');
                 setStats(data);
