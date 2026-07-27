@@ -59,7 +59,7 @@ const FarmerCrops = () => {
         setSubmitting(true);
 
         try {
-            const response = await api.post('/crop/add', {formData});
+            const response = await api.post('/crop/add', formData);
 
             const data = await response.data;
             if (!response.status === 200) throw new Error(data.message || 'Failed to log crop data.');
