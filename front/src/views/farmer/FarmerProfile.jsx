@@ -80,12 +80,11 @@ const FarmerProfile = () => {
         }
 
         try {
-            const response = await api.put('/farmer/add', { // Do NOT include content-type header for FormData!
-                body: dataPayload
-            });
+            const response = await api.put('/farmer/add',  // Do NOT include content-type header for FormData!
+                dataPayload );
 
-            const result = await response.json();
-            if (!response.ok) throw new Error(result.message || 'Failed to preserve profile.');
+            const result = await response.data;
+            if (!response.status === 200) throw new Error(result.message || 'Failed to preserve profile.');
 
             setMsg({ text: 'Logistical profile properties successfully written!', isError: false });
            

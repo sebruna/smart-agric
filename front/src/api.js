@@ -2,10 +2,8 @@ import axios from "axios";
 
 //create a configured axios instance
 const api = axios.create({
-    baseURL: 'https://smart-agrics.onrender.com/api', //points directly to Node.js server 'https://agritrade-backend.onrender.com' http://localhost:4000/api
-    headers:{
-        'Content-Type': 'application/json',
-    },
+    baseURL: 'https://smart-agrics.onrender.com/api', 
+    //points directly to Node.js server 'https://smart-agrics.onrender.com' http://localhost:4000/api
 });
 // Interceptor: Automaticall inject the bearer token before any request leaves the app
 api.interceptors.request.use((config)=>{

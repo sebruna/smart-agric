@@ -49,8 +49,6 @@ export const login = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         );
-        console.log(user);
-        
 
         // 4. Return token and basic user info to frontend
         res.status(200).json({
